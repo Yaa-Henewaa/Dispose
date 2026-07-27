@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  /* Disposé brand palette */
+  --color-teal: #1d9e75;
+  --color-teal-dark: #167a5b;
+  --color-pink: #d4537e;
+  --color-purple: #7f77dd;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --color-brand-teal: var(--color-teal);
+  --color-brand-teal-dark: var(--color-teal-dark);
+  --color-brand-pink: var(--color-pink);
+  --color-brand-purple: var(--color-purple);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}

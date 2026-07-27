@@ -1,0 +1,130 @@
+// Disposé ecommerce database schema
+// Provider: PostgreSQL (Supabase / Neon / any managed Postgres)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum FulfillmentType {
+  DELIVERY
+  PICKUP
+}
+
+enum OrderStatus {
+  NEW
+  PROCESSING
+  OUT_FOR_DELIVERY
+  READY_FOR_PICKUP
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum ProductVisibility {
+  VISIBLE
+  OUT_OF_STOCK
+  HIDDEN
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id       String     @id @default(cuid())
+  name     String
+  slug     String     @unique
+  parentId String?
+  parent   Category?  @relation("CategoryToSubcategory", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryToSubcategory")
+  products Product[]
+  sortOrder Int       @default(0)
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id          String            @id @default(cuid())
+  name        String
+  slug        String            @unique
+  description String            @default("")
+  price       Decimal           @db.Decimal(10, 2)
+  stock       Int               @default(0)
+  visibility  ProductVisibility @default(VISIBLE)
+  images      String[]          @default([])
+  categoryId  String
+  category    Category          @relation(fields: [categoryId], references: [id])
+  featured    Boolean           @default(false)
+  orderItems  OrderItem[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([categoryId])
+}
+
+model Order {
+  id              String          @id @default(cuid())
+  orderNumber     String          @unique
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  fulfillmentType FulfillmentType
+  deliveryAddress String?
+  deliveryArea    String?
+  deliveryFee     Decimal         @default(0) @db.Decimal(10, 2)
+  subtotal        Decimal         @db.Decimal(10, 2)
+  total           Decimal         @db.Decimal(10, 2)
+  status          OrderStatus     @default(NEW)
+  paymentStatus   PaymentStatus   @default(PENDING)
+  paymentReference String         @unique
+  items           OrderItem[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([paymentReference])
+  @@index([customerPhone])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  name      String
+  price     Decimal @db.Decimal(10, 2)
+  quantity  Int
+
+  @@index([orderId])
+}
+
+model DeliverySetting {
+  id        String   @id @default(cuid())
+  area      String
+  fee       Decimal  @db.Decimal(10, 2)
+  isDefault Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+}
+
+model ShopSetting {
+  id            String  @id @default("shop")
+  shopName      String  @default("Disposé")
+  address       String  @default("")
+  hours         String  @default("")
+  phone         String  @default("")
+  whatsapp      String  @default("")
+  pickupNotes   String  @default("")
+}
