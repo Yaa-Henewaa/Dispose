@@ -20,7 +20,7 @@ export default function ProductRowActions({
     <div className="flex items-center gap-2">
       <Link
         href={`/admin/products/${productId}/edit`}
-        className="text-brand-teal hover:underline"
+        className="text-[#7a3d62] hover:underline"
       >
         Edit
       </Link>

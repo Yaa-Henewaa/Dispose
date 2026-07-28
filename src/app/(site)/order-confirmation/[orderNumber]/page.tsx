@@ -125,7 +125,7 @@ export default async function OrderConfirmationPage({
 
       <Link
         href="/"
-        className="mt-6 inline-block rounded-full bg-brand-teal px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-teal-dark"
+        className="mt-6 inline-block rounded-full bg-[#f7d9e8] px-6 py-2.5 text-sm font-semibold text-[#7a3d62] hover:bg-[#f1c9db]"
       >
         Continue shopping
       </Link>

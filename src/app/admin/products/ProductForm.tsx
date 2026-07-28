@@ -51,8 +51,37 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
   const [imagesText, setImagesText] = useState(
     (product?.images ?? []).join("\n"),
   );
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  const [uploadingImages, setUploadingImages] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  function readFileAsDataUrl(file: File) {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error("Could not read image file."));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function handleImageSelection(
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) {
+    const files = Array.from(event.target.files ?? []);
+    if (files.length === 0) return;
+
+    setUploadingImages(true);
+    try {
+      const imageDataUrls = await Promise.all(files.map(readFileAsDataUrl));
+      setUploadedImages((current) => [...current, ...imageDataUrls]);
+    } catch {
+      setError("Could not upload one or more images.");
+    } finally {
+      setUploadingImages(false);
+      event.target.value = "";
+    }
+  }
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -64,6 +93,12 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
     }
 
     setSaving(true);
+    const pastedImages = imagesText
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean);
+    const allImages = [...new Set([...uploadedImages, ...pastedImages])];
+
     const input = {
       name: name.trim(),
       slug: slug.trim() || slugify(name),
@@ -73,10 +108,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
       visibility,
       categoryId,
       featured,
-      images: imagesText
-        .split("\n")
-        .map((line) => line.trim())
-        .filter(Boolean),
+      images: allImages,
     };
 
     try {
@@ -210,18 +242,40 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-gray-700">
-          Image URLs (one per line)
+          Product images
         </label>
+        <input
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleImageSelection}
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-[#f7d9e8] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#7a3d62]"
+        />
+        {uploadingImages && (
+          <p className="mt-2 text-sm text-gray-500">Preparing images...</p>
+        )}
+        {uploadedImages.length > 0 && (
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {uploadedImages.map((image, index) => (
+              <img
+                key={`${image}-${index}`}
+                src={image}
+                alt={`Uploaded preview ${index + 1}`}
+                className="h-24 w-full rounded-lg object-cover"
+              />
+            ))}
+          </div>
+        )}
         <textarea
           value={imagesText}
           onChange={(event) => setImagesText(event.target.value)}
           rows={3}
-          placeholder="https://example.com/photo1.jpg"
-          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono"
+          placeholder="Or paste image links here, one per line"
+          className="mt-3 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono"
         />
         <p className="mt-1 text-xs text-gray-400">
-          Upload photos to a service like Cloudinary or Supabase Storage, then
-          paste the image links here.
+          You can upload images from your device directly, or paste image links
+          if you already have them.
         </p>
       </div>
 
@@ -234,7 +288,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
       <button
         type="submit"
         disabled={saving}
-        className="rounded-full bg-brand-teal px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
+        className="rounded-full bg-[#f7d9e8] px-6 py-2.5 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f2c9db] disabled:opacity-50"
       >
         {saving ? "Saving..." : product ? "Save changes" : "Add product"}
       </button>

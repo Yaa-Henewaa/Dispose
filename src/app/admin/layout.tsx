@@ -21,18 +21,17 @@ export default async function AdminLayout({
   const session = await getAdminSession();
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="border-b border-gray-200 bg-white">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#fffafc_0%,#f7f0f8_100%)]">
+      <header className="border-b border-[#f0dfe9] bg-[rgba(255,255,255,0.94)] backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-teal text-sm font-bold text-white">
-              D
+          <Link href="/admin" className="flex items-center">
+            <span className="text-[18px] font-semibold tracking-[0.02em] text-[#4b2458]">
+              Disposé Admin
             </span>
-            <span className="font-bold text-gray-800">Disposé Admin</span>
-          </div>
+          </Link>
           {session && (
             <div className="flex items-center gap-3">
-              <span className="text-sm text-gray-500">{session.name}</span>
+              <span className="text-sm text-[#7d5d86]">{session.name}</span>
               <LogoutButton />
             </div>
           )}
@@ -42,7 +41,7 @@ export default async function AdminLayout({
             <Link
               key={item.href}
               href={item.href}
-              className="whitespace-nowrap rounded-full px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+              className="whitespace-nowrap rounded-full border border-transparent px-3 py-1.5 text-sm font-medium text-[#5b3a63] transition hover:border-[#e7c8e6] hover:bg-[#fff7fb]"
             >
               {item.label}
             </Link>

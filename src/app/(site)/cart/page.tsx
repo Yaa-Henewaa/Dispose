@@ -27,7 +27,7 @@ export default function CartPage() {
         <p className="mt-2 text-gray-500">Add some products to get started.</p>
         <Link
           href="/"
-          className="mt-6 inline-block rounded-full bg-brand-teal px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-teal-dark"
+          className="mt-6 inline-block rounded-full bg-[#f7d9e8] px-6 py-2.5 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f1c9db]"
         >
           Continue shopping
         </Link>
@@ -92,7 +92,7 @@ export default function CartPage() {
 
       <Link
         href="/checkout"
-        className="mt-6 block rounded-full bg-brand-teal py-3 text-center text-sm font-semibold text-white hover:bg-brand-teal-dark"
+        className="mt-6 block rounded-full bg-[#f7d9e8] py-3 text-center text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f1c9db]"
       >
         Proceed to Checkout
       </Link>

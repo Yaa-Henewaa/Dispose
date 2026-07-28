@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       // Common storage providers the owner may use for real product photos.
       { protocol: "https", hostname: "*.supabase.co" },
       { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
 };

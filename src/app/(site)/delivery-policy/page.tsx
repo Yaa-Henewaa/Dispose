@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatGHS } from "@/lib/format";
+import { FiMapPin, FiClock } from "react-icons/fi";
 
 export const metadata = { title: "Delivery & Pickup Policy" };
 
@@ -41,9 +42,19 @@ export default async function DeliveryPolicyPage() {
         Prefer to pick up your order yourself? Select &quot;Pickup&quot; at
         checkout — there&apos;s no delivery fee.
       </p>
-      <ul className="mt-3 space-y-1 text-gray-600">
-        {shop?.address && <li>📍 {shop.address}</li>}
-        {shop?.hours && <li>🕒 {shop.hours}</li>}
+      <ul className="mt-3 space-y-2 text-gray-600">
+        {shop?.address && (
+          <li className="flex items-center gap-2">
+            <FiMapPin className="text-[#7a3d62]" />
+            <span>{shop.address}</span>
+          </li>
+        )}
+        {shop?.hours && (
+          <li className="flex items-center gap-2">
+            <FiClock className="text-[#7a3d62]" />
+            <span>{shop.hours}</span>
+          </li>
+        )}
         {shop?.pickupNotes && <li>{shop.pickupNotes}</li>}
       </ul>
     </div>

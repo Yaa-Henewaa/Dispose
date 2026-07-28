@@ -13,7 +13,7 @@ export default function LogoutButton() {
         router.push("/admin/login");
         router.refresh();
       }}
-      className="rounded-full border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100"
+      className="rounded-full border border-[#ecd8e4] bg-[#f7d9e8] px-3 py-1.5 text-sm font-medium text-[#7a3d62] transition hover:bg-[#f2c9db]"
     >
       Sign out
     </button>

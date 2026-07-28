@@ -15,7 +15,7 @@ export default async function AdminProductsPage() {
         <h1 className="text-xl font-bold text-gray-800">Products</h1>
         <Link
           href="/admin/products/new"
-          className="rounded-full bg-brand-teal px-4 py-2 text-sm font-semibold text-white hover:bg-brand-teal-dark"
+          className="rounded-full bg-[#f7d9e8] px-4 py-2 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f2c9db]"
         >
           + Add product
         </Link>
@@ -50,7 +50,7 @@ export default async function AdminProductsPage() {
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                       product.visibility === "VISIBLE"
-                        ? "bg-brand-teal/10 text-brand-teal"
+                        ? "bg-[#fff7fb] text-[#7a3d62]"
                         : product.visibility === "OUT_OF_STOCK"
                           ? "bg-yellow-50 text-yellow-700"
                           : "bg-gray-100 text-gray-500"

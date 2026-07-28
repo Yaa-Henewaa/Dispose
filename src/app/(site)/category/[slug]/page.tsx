@@ -52,8 +52,8 @@ export default async function CategoryPage({
             href={`/category/${slug}`}
             className={`rounded-full px-3 py-1.5 text-sm font-medium ${
               !sub
-                ? "bg-brand-teal text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-[#f7d9e8] text-[#7a3d62]"
+                : "bg-[#fdf2f7] text-[#8b5e7a] hover:bg-[#f8e3ee]"
             }`}
           >
             All
@@ -64,8 +64,8 @@ export default async function CategoryPage({
               href={`/category/${slug}?sub=${child.id}`}
               className={`rounded-full px-3 py-1.5 text-sm font-medium ${
                 sub === child.id
-                  ? "bg-brand-teal text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  ? "bg-[#f7d9e8] text-[#7a3d62]"
+                  : "bg-[#fdf2f7] text-[#8b5e7a] hover:bg-[#f8e3ee]"
               }`}
             >
               {child.name}

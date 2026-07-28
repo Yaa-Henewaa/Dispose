@@ -62,7 +62,7 @@ export default async function AdminOrdersPage({
         </select>
         <button
           type="submit"
-          className="rounded-lg bg-brand-teal px-4 py-2 text-sm font-semibold text-white hover:bg-brand-teal-dark"
+          className="rounded-lg bg-[#f7d9e8] px-4 py-2 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f2c9db]"
         >
           Filter
         </button>
@@ -87,7 +87,7 @@ export default async function AdminOrdersPage({
                 <td className="px-4 py-2">
                   <Link
                     href={`/admin/orders/${order.id}`}
-                    className="font-mono font-medium text-brand-teal hover:underline"
+                    className="font-mono font-medium text-[#7a3d62] hover:underline"
                   >
                     {order.orderNumber}
                   </Link>
@@ -108,10 +108,10 @@ export default async function AdminOrdersPage({
                   <span
                     className={
                       order.paymentStatus === "PAID"
-                        ? "text-brand-teal font-medium"
+                        ? "font-medium text-[#7a3d62]"
                         : order.paymentStatus === "FAILED"
-                          ? "text-red-500 font-medium"
-                          : "text-yellow-600 font-medium"
+                          ? "font-medium text-red-500"
+                          : "font-medium text-yellow-600"
                     }
                   >
                     {order.paymentStatus}

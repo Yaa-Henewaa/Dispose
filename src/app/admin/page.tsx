@@ -32,16 +32,16 @@ export default async function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
+      <h1 className="text-xl font-semibold text-[#4b2458]">Dashboard</h1>
 
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4">
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-2xl border border-gray-100 bg-white p-4"
+            className="rounded-[22px] border border-[#f1dfe8] bg-white/90 p-4 shadow-[0_8px_20px_rgba(107,60,123,0.06)]"
           >
-            <p className="text-sm text-gray-500">{stat.label}</p>
-            <p className="mt-1 text-2xl font-bold text-gray-800">
+            <p className="text-sm text-[#7d5d86]">{stat.label}</p>
+            <p className="mt-1 text-2xl font-semibold text-[#4b2458]">
               {stat.value}
             </p>
           </div>
@@ -49,7 +49,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="mt-8">
-        <h2 className="mb-3 text-lg font-bold text-gray-800">
+        <h2 className="mb-3 text-lg font-semibold text-[#4b2458]">
           Low stock alerts
         </h2>
         {lowStockProducts.length === 0 ? (
@@ -57,9 +57,9 @@ export default async function AdminDashboardPage() {
             All products are well stocked.
           </p>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white">
+          <div className="overflow-hidden rounded-[22px] border border-[#f1dfe8] bg-white/90 shadow-[0_8px_20px_rgba(107,60,123,0.06)]">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-left text-gray-500">
+              <thead className="bg-[#fff7fb] text-left text-[#7d5d86]">
                 <tr>
                   <th className="px-4 py-2 font-medium">Product</th>
                   <th className="px-4 py-2 font-medium">Stock left</th>

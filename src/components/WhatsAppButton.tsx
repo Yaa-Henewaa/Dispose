@@ -10,7 +10,7 @@ export default function WhatsAppButton({ phone }: { phone: string }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-105"
+      className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-[#f7d9e8] px-4 py-3 text-sm font-semibold text-[#7a3d62] shadow-lg transition hover:scale-105"
     >
       <span aria-hidden className="text-lg">
         💬

@@ -127,7 +127,7 @@ export default function CategoryManager({
           <button
             type="submit"
             disabled={busy}
-            className="rounded-full bg-brand-teal px-5 py-2 text-sm font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
+            className="rounded-full bg-[#f7d9e8] px-5 py-2 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f2c9db] disabled:opacity-50"
           >
             Add category
           </button>

@@ -25,11 +25,14 @@ export default function AddToCartButton({
   const addItem = useCartStore((state) => state.addItem);
   const [added, setAdded] = useState(false);
 
+  const buttonClass =
+    "w-full rounded-full bg-[#f7d9e8] px-4 py-2 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f1c9db] active:scale-[0.98]";
+
   if (outOfStock) {
     return (
       <button
         disabled
-        className="w-full rounded-full bg-gray-200 px-4 py-2 text-sm font-semibold text-gray-500 cursor-not-allowed"
+        className={`${buttonClass} cursor-not-allowed opacity-80`}
       >
         Out of stock
       </button>
@@ -43,7 +46,7 @@ export default function AddToCartButton({
         setAdded(true);
         setTimeout(() => setAdded(false), 1200);
       }}
-      className="w-full rounded-full bg-brand-teal px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-teal-dark active:scale-95"
+      className={buttonClass}
     >
       {added ? "Added ✓" : "Add to Cart"}
     </button>

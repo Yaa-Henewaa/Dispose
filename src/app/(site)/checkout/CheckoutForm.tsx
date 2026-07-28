@@ -135,8 +135,8 @@ export default function CheckoutForm({
               onClick={() => setFulfillmentType("DELIVERY")}
               className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium ${
                 fulfillmentType === "DELIVERY"
-                  ? "border-brand-teal bg-brand-teal/10 text-brand-teal"
-                  : "border-gray-300 text-gray-600"
+                  ? "border-[#e8cfe0] bg-[#fff7fb] text-[#7a3d62]"
+                  : "border-[#e9d7e7] text-gray-600"
               }`}
             >
               Delivery
@@ -146,8 +146,8 @@ export default function CheckoutForm({
               onClick={() => setFulfillmentType("PICKUP")}
               className={`flex-1 rounded-lg border px-3 py-2 text-sm font-medium ${
                 fulfillmentType === "PICKUP"
-                  ? "border-brand-teal bg-brand-teal/10 text-brand-teal"
-                  : "border-gray-300 text-gray-600"
+                  ? "border-[#e8cfe0] bg-[#fff7fb] text-[#7a3d62]"
+                  : "border-[#e9d7e7] text-gray-600"
               }`}
             >
               Pickup
@@ -194,7 +194,7 @@ export default function CheckoutForm({
             {pickupAddress && <p className="mt-1">{pickupAddress}</p>}
             {pickupHours && <p>{pickupHours}</p>}
             {pickupNotes && <p className="mt-1">{pickupNotes}</p>}
-            <p className="mt-1 text-brand-teal font-medium">No delivery fee</p>
+            <p className="mt-1 font-medium text-[#7a3d62]">No delivery fee</p>
           </div>
         )}
 
@@ -205,7 +205,7 @@ export default function CheckoutForm({
         )}
       </div>
 
-      <div className="h-fit rounded-2xl border border-gray-100 p-4">
+      <div className="h-fit rounded-[22px] border border-[#f0dfe9] bg-white/90 p-4 shadow-[0_8px_20px_rgba(107,60,123,0.06)]">
         <h2 className="font-semibold text-gray-800">Order summary</h2>
         <div className="mt-3 space-y-2 text-sm">
           {items.map((item) => (
@@ -236,7 +236,7 @@ export default function CheckoutForm({
         <button
           type="submit"
           disabled={submitting || items.length === 0}
-          className="mt-5 w-full rounded-full bg-brand-teal py-3 text-sm font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
+          className="mt-5 w-full rounded-full bg-[#f7d9e8] py-3 text-sm font-semibold text-[#7a3d62] hover:bg-[#f1c9db] disabled:opacity-50"
         >
           {submitting ? "Redirecting to payment..." : "Pay now"}
         </button>

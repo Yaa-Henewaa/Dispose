@@ -52,7 +52,7 @@ export default async function OrderDetailPage({
             <span
               className={
                 order.paymentStatus === "PAID"
-                  ? "font-medium text-brand-teal"
+                  ? "font-medium text-[#7a3d62]"
                   : "font-medium text-yellow-600"
               }
             >

@@ -11,29 +11,28 @@ export default async function Header() {
   });
 
   return (
-    <header className="sticky top-0 z-30 border-b border-gray-100 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-white/50 bg-[rgba(255,255,255,0.8)] backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-3">
-        <Link href="/" className="flex items-center gap-2 shrink-0">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-teal text-lg font-bold text-white">
-            D
+        <Link href="/" className="ml-1 flex shrink-0 items-center">
+          <span className="text-[18px] font-semibold tracking-[0.02em] text-[#4b2458]">
+            Disposé
           </span>
-          <span className="text-xl font-bold text-brand-pink">Disposé</span>
         </Link>
 
         <div className="hidden flex-1 md:block">
           <SearchBar />
         </div>
 
-        <nav className="ml-auto flex items-center gap-1">
+        <nav className="ml-auto flex items-center gap-2">
           <CartBadge />
         </nav>
       </div>
 
-      <div className="border-t border-gray-50">
-        <div className="mx-auto flex max-w-6xl gap-1 overflow-x-auto px-4 py-2 text-sm">
+      <div className="border-t border-stone-100">
+        <div className="mx-auto flex max-w-6xl items-center justify-center gap-1 overflow-x-auto px-4 py-2.5 text-sm">
           <Link
             href="/"
-            className="whitespace-nowrap rounded-full px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+            className="whitespace-nowrap rounded-full border border-transparent px-3 py-1.5 font-medium text-[#5b3a63] transition hover:border-[#e7c8e6] hover:bg-white/70"
           >
             Home
           </Link>
@@ -41,7 +40,7 @@ export default async function Header() {
             <Link
               key={category.id}
               href={`/category/${category.slug}`}
-              className="whitespace-nowrap rounded-full px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+              className="whitespace-nowrap rounded-full border border-transparent px-3 py-1.5 font-medium text-[#5b3a63] transition hover:border-[#e7c8e6] hover:bg-white/70"
             >
               {category.name}
             </Link>
@@ -49,7 +48,7 @@ export default async function Header() {
         </div>
       </div>
 
-      <div className="border-t border-gray-50 px-4 py-2 md:hidden">
+      <div className="border-t border-stone-100 px-4 py-2 md:hidden">
         <SearchBar />
       </div>
     </header>

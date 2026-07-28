@@ -36,16 +36,15 @@ function AdminLoginForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-sm">
+    <div className="flex min-h-screen items-center justify-center bg-[linear-gradient(180deg,#fffafc_0%,#f7f0f8_100%)] px-4">
+      <div className="w-full max-w-sm rounded-3xl border border-[#f1dfe8] bg-white/90 p-8 shadow-[0_12px_35px_rgba(107,60,123,0.10)]">
         <div className="text-center">
-          <span className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-brand-teal text-lg font-bold text-white">
-            D
-          </span>
-          <h1 className="mt-3 text-lg font-bold text-gray-800">
+          <h1 className="text-[18px] font-semibold tracking-[0.02em] text-[#4b2458]">
             Disposé Admin
           </h1>
-          <p className="text-sm text-gray-500">Sign in to manage your shop</p>
+          <p className="mt-1 text-sm text-[#7d5d86]">
+            Sign in to manage your shop
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-3">
@@ -83,7 +82,7 @@ function AdminLoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-brand-teal py-2.5 text-sm font-semibold text-white hover:bg-brand-teal-dark disabled:opacity-50"
+            className="w-full rounded-full bg-[#f7d9e8] py-2.5 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f2c9db] disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign in"}
           </button>

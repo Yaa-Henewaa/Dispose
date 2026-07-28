@@ -185,7 +185,9 @@ async function main() {
       stock: 65,
       category: "Personal Care",
       featured: true,
-      images: ["https://placehold.co/600x600/7F77DD/FFFFFF?text=Soap"],
+      images: [
+        "https://images.unsplash.com/photo-1608571424352-9261a1e1e6f7?auto=format&fit=crop&w=900&q=80",
+      ],
     },
     {
       name: "Toothpaste (Family Pack, 2-Pack)",
@@ -215,7 +217,9 @@ async function main() {
       stock: 3,
       category: "Cleaning Supplies",
       featured: true,
-      images: ["https://placehold.co/600x600/7F77DD/FFFFFF?text=Tissue"],
+      images: [
+        "https://images.unsplash.com/photo-1581578731548-c8f0f2d8b1f5?auto=format&fit=crop&w=900&q=80",
+      ],
     },
   ];
 
