@@ -2,21 +2,42 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [categories, featured, latest] = await Promise.all([
     prisma.category.findMany({
       where: { parentId: null },
       orderBy: { sortOrder: "asc" },
+      select: { id: true, name: true, slug: true },
     }),
     prisma.product.findMany({
       where: { featured: true, visibility: { not: "HIDDEN" } },
       take: 8,
       orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        price: true,
+        images: true,
+        stock: true,
+        visibility: true,
+      },
     }),
     prisma.product.findMany({
       where: { visibility: { not: "HIDDEN" } },
       take: 8,
       orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        price: true,
+        images: true,
+        stock: true,
+        visibility: true,
+      },
     }),
   ]);
 

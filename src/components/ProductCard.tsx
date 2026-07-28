@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { formatGHS } from "@/lib/format";
 import AddToCartButton from "./AddToCartButton";
 
@@ -40,11 +41,14 @@ export default function ProductCard({ product }: { product: ProductCardData }) {
     <div className="group flex flex-col overflow-hidden rounded-[18px] border border-[#ead8eb] bg-white/90 shadow-[0_8px_24px_rgba(107,60,123,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(107,60,123,0.14)]">
       <Link href={`/product/${product.slug}`} className="block">
         <div className="relative aspect-4/3 w-full overflow-hidden bg-stone-100">
-          <img
+          <Image
             src={image}
             alt={product.name}
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            className="object-cover transition duration-500 group-hover:scale-105"
             loading="lazy"
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            quality={75}
           />
           {outOfStock && (
             <span className="absolute left-2 top-2 rounded-full bg-[linear-gradient(135deg,#d76ea0_0%,#7a5ceb_100%)] px-2 py-1 text-xs font-medium text-white">

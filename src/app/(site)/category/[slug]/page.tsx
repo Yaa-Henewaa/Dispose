@@ -1,8 +1,50 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { cache } from "react";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import CategorySortSelect from "@/components/CategorySortSelect";
+
+export const revalidate = 60;
+
+const getCategoryData = cache(async (slug: string) => {
+  return prisma.category.findUnique({
+    where: { slug },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      children: {
+        orderBy: { sortOrder: "asc" },
+        select: { id: true, name: true, slug: true },
+      },
+    },
+  });
+});
+
+const getCategoryProducts = cache(
+  async (
+    categoryIds: string[],
+    orderBy: { price?: "asc" | "desc"; createdAt?: "desc" },
+  ) => {
+    return prisma.product.findMany({
+      where: {
+        categoryId: { in: categoryIds },
+        visibility: { not: "HIDDEN" },
+      },
+      orderBy,
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        price: true,
+        images: true,
+        stock: true,
+        visibility: true,
+      },
+    });
+  },
+);
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;
@@ -16,10 +58,7 @@ export default async function CategoryPage({
   const { slug } = await params;
   const { sort, sub } = await searchParams;
 
-  const category = await prisma.category.findUnique({
-    where: { slug },
-    include: { children: { orderBy: { sortOrder: "asc" } } },
-  });
+  const category = await getCategoryData(slug);
 
   if (!category) notFound();
 
@@ -34,13 +73,7 @@ export default async function CategoryPage({
         ? { price: "desc" }
         : { createdAt: "desc" };
 
-  const products = await prisma.product.findMany({
-    where: {
-      categoryId: { in: categoryIds },
-      visibility: { not: "HIDDEN" },
-    },
-    orderBy,
-  });
+  const products = await getCategoryProducts(categoryIds, orderBy);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -50,6 +83,7 @@ export default async function CategoryPage({
         <div className="mt-4 flex flex-wrap gap-2">
           <Link
             href={`/category/${slug}`}
+            prefetch={true}
             className={`rounded-full px-3 py-1.5 text-sm font-medium ${
               !sub
                 ? "bg-[#f7d9e8] text-[#7a3d62]"
@@ -62,6 +96,7 @@ export default async function CategoryPage({
             <Link
               key={child.id}
               href={`/category/${slug}?sub=${child.id}`}
+              prefetch={true}
               className={`rounded-full px-3 py-1.5 text-sm font-medium ${
                 sub === child.id
                   ? "bg-[#f7d9e8] text-[#7a3d62]"
