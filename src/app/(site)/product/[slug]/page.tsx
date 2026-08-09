@@ -6,6 +6,8 @@ import AddToCartButton from "@/components/AddToCartButton";
 import { formatGHS } from "@/lib/format";
 import type { Metadata } from "next";
 
+export const revalidate = 60;
+
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }

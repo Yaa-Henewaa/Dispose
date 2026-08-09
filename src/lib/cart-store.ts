@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 export interface CartItem {
   productId: string;
@@ -63,6 +63,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "dispose-cart",
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

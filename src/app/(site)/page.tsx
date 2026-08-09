@@ -1,22 +1,50 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
+
+export const metadata: Metadata = {
+  title: "Disposé Ghana | Disposable Cups, Plates & Party Supplies in Accra",
+  description:
+    "Shop disposable cups, plates, takeaway packs, party supplies, and toiletries in Accra, Ghana. Fast delivery and pickup available from Disposé.",
+};
+
+export const revalidate = 60;
 
 export default async function HomePage() {
   const [categories, featured, latest] = await Promise.all([
     prisma.category.findMany({
       where: { parentId: null },
       orderBy: { sortOrder: "asc" },
+      select: { id: true, name: true, slug: true },
     }),
     prisma.product.findMany({
       where: { featured: true, visibility: { not: "HIDDEN" } },
       take: 8,
       orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        price: true,
+        images: true,
+        stock: true,
+        visibility: true,
+      },
     }),
     prisma.product.findMany({
       where: { visibility: { not: "HIDDEN" } },
       take: 8,
       orderBy: { createdAt: "desc" },
+      select: {
+        id: true,
+        slug: true,
+        name: true,
+        price: true,
+        images: true,
+        stock: true,
+        visibility: true,
+      },
     }),
   ]);
 
@@ -38,7 +66,7 @@ export default async function HomePage() {
             Ready to serve you!
           </div>
           <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            Everyday supplies for your parties and events.
+            Disposable essentials for food vendors, parties, and everyday use.
           </h1>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-white/90 sm:text-base">
             Discover disposables, party supplies, and everyday basics with a
@@ -58,44 +86,6 @@ export default async function HomePage() {
             >
               Shop Disposables
             </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <div className="rounded-[28px] bg-[linear-gradient(135deg,rgba(255,247,251,0.95)_0%,rgba(245,232,247,0.95)_100%)] p-6 shadow-[0_10px_30px_rgba(107,60,123,0.05)] sm:p-8">
-          <div className="mb-5">
-            <div className="mb-2 inline-flex rounded-full border border-[#f7e6ef] bg-white/70 px-3 py-1 text-[10px] font-medium uppercase tracking-[0.34em] text-[#9a5d87]">
-              Shop by category
-            </div>
-            <h2 className="text-xl font-semibold text-[#4b2458]">
-              Curated collections for every kind of event
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {categories.map((category) => (
-              <Link
-                key={category.id}
-                href={`/category/${category.slug}`}
-                className="group relative flex min-h-33 flex-col justify-between overflow-hidden rounded-[22px] border border-[#f2e3ee] bg-[#fffdfd] p-4 shadow-[0_8px_20px_rgba(107,60,123,0.06)] transition hover:-translate-y-1 hover:border-[#e8cfe0] hover:shadow-[0_12px_28px_rgba(107,60,123,0.1)]"
-              >
-                <div className="absolute inset-0 bg-[#fcf7fa]" />
-                <div className="relative flex items-start justify-between">
-                  <span className="mb-2 inline-flex rounded-full border border-[#f3e6ef] bg-white px-3 py-1 text-[10px] font-medium uppercase tracking-[0.34em] text-[#9a5d87]">
-                    Collection
-                  </span>
-                  <span className="flex h-2.5 w-2.5 rounded-full bg-[#e8cfe0] transition group-hover:scale-110" />
-                </div>
-                <div className="relative">
-                  <h3 className="text-base font-semibold text-[#4b2458]">
-                    {category.name}
-                  </h3>
-                  <p className="mt-1 text-sm text-[#7d5d86]">
-                    Explore {category.name.toLowerCase()}
-                  </p>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
       </section>
