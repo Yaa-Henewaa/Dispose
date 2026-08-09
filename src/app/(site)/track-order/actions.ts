@@ -15,14 +15,12 @@ export interface TrackOrderResult {
   };
 }
 
-export async function trackOrder(
-  orderNumber: string,
-  phone: string,
-): Promise<TrackOrderResult> {
+export async function trackOrder(query: string): Promise<TrackOrderResult> {
+  const trimmedQuery = query.trim();
+
   const order = await prisma.order.findFirst({
     where: {
-      orderNumber: orderNumber.trim(),
-      customerPhone: phone.trim(),
+      OR: [{ orderNumber: trimmedQuery }, { customerPhone: trimmedQuery }],
     },
     include: { items: true },
   });
