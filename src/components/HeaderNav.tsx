@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import CartBadge from "./CartBadge";
 import SearchBar from "./SearchBar";
@@ -34,8 +35,15 @@ export default function HeaderNav({
             <Link
               href="/"
               onClick={() => setOpen(false)}
-              className="text-lg font-semibold text-[#4b2458]"
+              className="flex items-center gap-2 text-lg font-semibold text-[#4b2458]"
             >
+              <Image
+                src="/logo.png"
+                alt="Disposé"
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-full object-cover"
+              />
               Disposé
             </Link>
             <button
@@ -92,7 +100,14 @@ export default function HeaderNav({
             ☰
           </button>
 
-          <Link href="/" className="ml-1 flex shrink-0 items-center">
+          <Link href="/" className="ml-1 flex shrink-0 items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="Disposé"
+              width={32}
+              height={32}
+              className="h-8 w-8 rounded-full object-cover"
+            />
             <span className="text-[18px] font-semibold tracking-[0.02em] text-[#4b2458]">
               Disposé
             </span>
