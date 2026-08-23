@@ -20,8 +20,26 @@ export default function ProductCard({ product }: { product: ProductCardData }) {
     "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=60&fm=webp",
   ];
 
+  // Keep in sync with images.remotePatterns in next.config.ts, or next/image throws and crashes the page.
+  const allowedImageHosts = [
+    "res.cloudinary.com",
+    "images.unsplash.com",
+    "m.media-amazon.com",
+  ];
+  const isAllowedImage = (url: string) => {
+    try {
+      const { hostname } = new URL(url);
+      return (
+        allowedImageHosts.includes(hostname) ||
+        hostname.endsWith(".supabase.co")
+      );
+    } catch {
+      return false;
+    }
+  };
+
   const getImageSrc = (rawImage: string | null, name: string) => {
-    if (rawImage && !rawImage.includes("placehold.co")) {
+    if (rawImage && isAllowedImage(rawImage)) {
       return rawImage;
     }
 

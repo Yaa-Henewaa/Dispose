@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   },
   description:
     "Disposables, party supplies, and toiletries in Accra, Ghana. Order online for delivery or pickup.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
