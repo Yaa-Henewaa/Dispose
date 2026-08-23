@@ -20,6 +20,7 @@ export default function CategoryManager({
   const [newParentId, setNewParentId] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   async function handleAdd(event: React.FormEvent) {
     event.preventDefault();
@@ -37,11 +38,13 @@ export default function CategoryManager({
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this category?")) return;
+    setDeletingId(id);
     const result = await deleteCategory(id);
     if (!result.ok) {
       alert(result.error);
     }
     router.refresh();
+    setDeletingId(null);
   }
 
   return (
@@ -56,10 +59,11 @@ export default function CategoryManager({
                   {category.name}
                 </span>
                 <button
+                  disabled={deletingId === category.id}
                   onClick={() => handleDelete(category.id)}
-                  className="text-sm text-red-500 hover:underline"
+                  className="text-sm text-red-500 hover:underline disabled:opacity-50"
                 >
-                  Delete
+                  {deletingId === category.id ? "Deleting..." : "Delete"}
                 </button>
               </div>
               {category.children.length > 0 && (
@@ -71,10 +75,11 @@ export default function CategoryManager({
                     >
                       <span>{child.name}</span>
                       <button
+                        disabled={deletingId === child.id}
                         onClick={() => handleDelete(child.id)}
-                        className="text-red-500 hover:underline"
+                        className="text-red-500 hover:underline disabled:opacity-50"
                       >
-                        Delete
+                        {deletingId === child.id ? "Deleting..." : "Delete"}
                       </button>
                     </li>
                   ))}
@@ -129,7 +134,7 @@ export default function CategoryManager({
             disabled={busy}
             className="rounded-full bg-[#f7d9e8] px-5 py-2 text-sm font-semibold text-[#7a3d62] transition hover:bg-[#f2c9db] disabled:opacity-50"
           >
-            Add category
+            {busy ? "Adding..." : "Add category"}
           </button>
         </form>
       </div>

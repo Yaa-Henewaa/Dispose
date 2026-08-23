@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdf7fb;
+  --background: #f2f2f4;
   --foreground: #2b1630;
 
   /* Disposé brand palette */
@@ -32,7 +32,7 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #fdf7fb 0%, #f7effc 100%);
+  background: linear-gradient(135deg, #f2f2f4 0%, #ececee 100%);
   color: #2b1630;
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
