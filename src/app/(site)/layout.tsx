@@ -11,7 +11,13 @@ export default async function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const shop = await prisma.shopSetting.findUnique({ where: { id: "shop" } });
+  let shop = null;
+
+  try {
+    shop = await prisma.shopSetting.findUnique({ where: { id: "shop" } });
+  } catch {
+    shop = null;
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-background">

@@ -12,41 +12,77 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const [categories, featured, latest] = await Promise.all([
-    prisma.category.findMany({
-      where: { parentId: null },
-      orderBy: { sortOrder: "asc" },
-      select: { id: true, name: true, slug: true },
-    }),
-    prisma.product.findMany({
-      where: { featured: true, visibility: { not: "HIDDEN" } },
-      take: 8,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-        price: true,
-        images: true,
-        stock: true,
-        visibility: true,
-      },
-    }),
-    prisma.product.findMany({
-      where: { visibility: { not: "HIDDEN" } },
-      take: 8,
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        slug: true,
-        name: true,
-        price: true,
-        images: true,
-        stock: true,
-        visibility: true,
-      },
-    }),
-  ]);
+  let categories: Array<{ id: string; name: string; slug: string }> = [];
+  let featured: Array<{
+    id: string;
+    slug: string;
+    name: string;
+    price: unknown;
+    images: string[];
+    stock: number;
+    visibility: "VISIBLE" | "OUT_OF_STOCK" | "HIDDEN";
+  }> = [];
+  let latest: Array<{
+    id: string;
+    slug: string;
+    name: string;
+    price: unknown;
+    images: string[];
+    stock: number;
+    visibility: "VISIBLE" | "OUT_OF_STOCK" | "HIDDEN";
+  }> = [];
+
+  const mapProduct = (product: (typeof featured)[number]) => ({
+    id: product.id,
+    slug: product.slug,
+    name: product.name,
+    price: Number(product.price),
+    images: product.images,
+    stock: product.stock,
+    visibility: product.visibility,
+  });
+
+  try {
+    [categories, featured, latest] = await Promise.all([
+      prisma.category.findMany({
+        where: { parentId: null },
+        orderBy: { sortOrder: "asc" },
+        select: { id: true, name: true, slug: true },
+      }) as Promise<Array<{ id: string; name: string; slug: string }>>,
+      prisma.product.findMany({
+        where: { featured: true, visibility: { not: "HIDDEN" } },
+        take: 8,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          slug: true,
+          name: true,
+          price: true,
+          images: true,
+          stock: true,
+          visibility: true,
+        },
+      }),
+      prisma.product.findMany({
+        where: { visibility: { not: "HIDDEN" } },
+        take: 8,
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          slug: true,
+          name: true,
+          price: true,
+          images: true,
+          stock: true,
+          visibility: true,
+        },
+      }),
+    ]);
+  } catch {
+    categories = [];
+    featured = [];
+    latest = [];
+  }
 
   return (
     <div>
@@ -103,18 +139,7 @@ export default async function HomePage() {
             </div>
             <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
               {featured.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={{
-                    id: product.id,
-                    slug: product.slug,
-                    name: product.name,
-                    price: Number(product.price),
-                    images: product.images,
-                    stock: product.stock,
-                    visibility: product.visibility,
-                  }}
-                />
+                <ProductCard key={product.id} product={mapProduct(product)} />
               ))}
             </div>
           </div>
@@ -133,18 +158,7 @@ export default async function HomePage() {
           </div>
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4">
             {latest.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={{
-                  id: product.id,
-                  slug: product.slug,
-                  name: product.name,
-                  price: Number(product.price),
-                  images: product.images,
-                  stock: product.stock,
-                  visibility: product.visibility,
-                }}
-              />
+              <ProductCard key={product.id} product={mapProduct(product)} />
             ))}
           </div>
         </div>
