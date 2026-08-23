@@ -53,17 +53,9 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
   );
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-
-  function readFileAsDataUrl(file: File) {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = () => reject(new Error("Could not read image file."));
-      reader.readAsDataURL(file);
-    });
-  }
 
   async function handleImageSelection(
     event: React.ChangeEvent<HTMLInputElement>,
@@ -72,9 +64,31 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
     if (files.length === 0) return;
 
     setUploadingImages(true);
+    setUploadProgress(0);
+    setError(null);
+
     try {
-      const imageDataUrls = await Promise.all(files.map(readFileAsDataUrl));
-      setUploadedImages((current) => [...current, ...imageDataUrls]);
+      const uploadedUrls = await Promise.all(
+        files.map(async (file) => {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          const response = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error("Upload failed");
+          }
+
+          const data = await response.json();
+          return data.secure_url as string;
+        }),
+      );
+
+      setUploadedImages((current) => [...current, ...uploadedUrls]);
+      setUploadProgress(100);
     } catch {
       setError("Could not upload one or more images.");
     } finally {
@@ -252,7 +266,10 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
           className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm file:mr-3 file:rounded-full file:border-0 file:bg-[#f7d9e8] file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-[#7a3d62]"
         />
         {uploadingImages && (
-          <p className="mt-2 text-sm text-gray-500">Preparing images...</p>
+          <p className="mt-2 text-sm text-gray-500">
+            Uploading images
+            {uploadProgress > 0 ? ` (${uploadProgress}%)` : "..."}
+          </p>
         )}
         {uploadedImages.length > 0 && (
           <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
