@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import ProductCard from "@/components/ProductCard";
 import AddToCartButton from "@/components/AddToCartButton";
@@ -51,14 +50,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <div className="grid gap-3">
           <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-50">
             {product.images[0] ? (
-              <Image
+              <img
                 src={product.images[0]}
                 alt={product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-                priority
-                unoptimized
+                className="h-full w-full object-cover"
+                loading="eager"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-gray-300">
@@ -73,13 +69,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   key={index}
                   className="relative aspect-square overflow-hidden rounded-lg bg-gray-50"
                 >
-                  <Image
+                  <img
                     src={image}
                     alt={`${product.name} ${index + 2}`}
-                    fill
-                    sizes="25vw"
-                    className="object-cover"
-                    unoptimized
+                    className="h-full w-full object-cover"
                   />
                 </div>
               ))}
@@ -88,32 +81,32 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
 
         <div>
-          <p className="text-sm font-medium text-brand-purple">
+          <p className="text-sm font-medium text-[#8a5a8f]">
             {product.category.name}
           </p>
-          <h1 className="mt-1 text-2xl font-bold text-gray-800">
+          <h1 className="mt-1 text-2xl font-bold text-[#4b2458]">
             {product.name}
           </h1>
-          <p className="mt-3 text-2xl font-bold text-brand-pink">
+          <p className="mt-3 text-2xl font-bold text-[#c24b8b]">
             {formatGHS(Number(product.price))}
           </p>
-          <p className="mt-2 text-sm">
+          <p className="mt-2 text-sm text-[#5c4765]">
             {outOfStock ? (
               <span className="font-medium text-red-500">Out of stock</span>
             ) : (
-              <span className="font-medium text-brand-teal">
+              <span className="font-medium text-[#2f8f7b]">
                 In stock ({product.stock} available)
               </span>
             )}
           </p>
 
           {product.description && (
-            <p className="mt-4 whitespace-pre-line text-gray-600">
+            <p className="mt-4 whitespace-pre-line text-[#5f5163]">
               {product.description}
             </p>
           )}
 
-          <div className="mt-6 max-w-xs">
+          <div className="mt-6 w-full max-w-sm">
             <AddToCartButton
               productId={product.id}
               slug={product.slug}
@@ -127,11 +120,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
-      {related.length > 0 && (
-        <section className="mt-14">
-          <h2 className="mb-4 text-lg font-bold text-gray-800">
-            You may also like
-          </h2>
+      <section className="mt-14 rounded-2xl border border-[#f0e2eb] bg-[#fffafc] p-5">
+        <h2 className="mb-4 text-lg font-bold text-[#4b2458]">
+          You may also like
+        </h2>
+        {related.length > 0 ? (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
             {related.map((item) => (
               <ProductCard
@@ -148,8 +141,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <p className="text-sm text-[#6a4a6b]">
+            More similar items will appear here soon.
+          </p>
+        )}
+      </section>
     </div>
   );
 }
