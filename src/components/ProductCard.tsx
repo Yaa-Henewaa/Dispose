@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { formatGHS } from "@/lib/format";
 
 export interface ProductCardData {
@@ -13,44 +12,20 @@ export interface ProductCardData {
 }
 
 export default function ProductCard({ product }: { product: ProductCardData }) {
-  const fallbackImages = [
-    "https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=900&q=60&fm=webp",
-    "https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=900&q=60&fm=webp",
-    "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=60&fm=webp",
-    "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=60&fm=webp",
-  ];
+  const isRenderableImage = (url: string) => {
+    if (!url.trim()) return false;
+    if (url.startsWith("data:")) return true;
 
-  // Keep in sync with images.remotePatterns in next.config.ts, or next/image throws and crashes the page.
-  const allowedImageHosts = [
-    "res.cloudinary.com",
-    "images.unsplash.com",
-    "m.media-amazon.com",
-  ];
-  const isAllowedImage = (url: string) => {
     try {
-      const { hostname } = new URL(url);
-      return (
-        allowedImageHosts.includes(hostname) ||
-        hostname.endsWith(".supabase.co")
-      );
+      const { protocol } = new URL(url);
+      return protocol === "http:" || protocol === "https:";
     } catch {
       return false;
     }
   };
 
-  const getImageSrc = (rawImage: string | null, name: string) => {
-    if (rawImage && isAllowedImage(rawImage)) {
-      return rawImage;
-    }
-
-    const seed = name
-      .split("")
-      .reduce((total, char) => total + char.charCodeAt(0), 0);
-
-    return fallbackImages[seed % fallbackImages.length];
-  };
-
-  const image = getImageSrc(product.images[0] ?? null, product.name);
+  const rawImage = product.images[0] ?? null;
+  const image = rawImage && isRenderableImage(rawImage) ? rawImage : null;
   const outOfStock =
     product.visibility === "OUT_OF_STOCK" || product.stock <= 0;
 
@@ -58,15 +33,18 @@ export default function ProductCard({ product }: { product: ProductCardData }) {
     <div className="group flex flex-col overflow-hidden rounded-none border border-[#ead8eb] bg-white/90 shadow-[0_8px_24px_rgba(107,60,123,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(107,60,123,0.14)]">
       <Link href={`/product/${product.slug}`} className="block">
         <div className="relative aspect-square w-full overflow-hidden bg-stone-100">
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            className="object-cover transition duration-500 group-hover:scale-105"
-            loading="lazy"
-            quality={60}
-          />
+          {image ? (
+            <img
+              src={image}
+              alt={product.name}
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center text-sm text-stone-400">
+              No image
+            </div>
+          )}
           {outOfStock && (
             <span className="absolute left-2 top-2 rounded-full bg-[linear-gradient(135deg,#d76ea0_0%,#7a5ceb_100%)] px-2 py-1 text-xs font-medium text-white">
               Out of stock
