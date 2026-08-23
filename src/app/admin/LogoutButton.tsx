@@ -1,21 +1,25 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { logoutAdmin } from "./login/actions";
 
 export default function LogoutButton() {
   const router = useRouter();
+  const [signingOut, setSigningOut] = useState(false);
 
   return (
     <button
+      disabled={signingOut}
       onClick={async () => {
+        setSigningOut(true);
         await logoutAdmin();
         router.push("/admin/login");
         router.refresh();
       }}
-      className="rounded-full border border-[#ecd8e4] bg-[#f7d9e8] px-3 py-1.5 text-sm font-medium text-[#7a3d62] transition hover:bg-[#f2c9db]"
+      className="rounded-full border border-[#ecd8e4] bg-[#f7d9e8] px-3 py-1.5 text-sm font-medium text-[#7a3d62] transition hover:bg-[#f2c9db] disabled:opacity-50"
     >
-      Sign out
+      {signingOut ? "Signing out..." : "Sign out"}
     </button>
   );
 }

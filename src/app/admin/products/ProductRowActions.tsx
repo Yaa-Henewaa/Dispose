@@ -14,7 +14,7 @@ export default function ProductRowActions({
   visibility: ProductVisibility;
 }) {
   const router = useRouter();
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<"visibility" | "delete" | null>(null);
 
   return (
     <div className="flex items-center gap-2">
@@ -25,31 +25,35 @@ export default function ProductRowActions({
         Edit
       </Link>
       <button
-        disabled={busy}
+        disabled={busy !== null}
         onClick={async () => {
-          setBusy(true);
+          setBusy("visibility");
           const next: ProductVisibility =
             visibility === "VISIBLE" ? "OUT_OF_STOCK" : "VISIBLE";
           await setProductVisibility(productId, next);
           router.refresh();
-          setBusy(false);
+          setBusy(null);
         }}
         className="text-gray-500 hover:underline disabled:opacity-50"
       >
-        {visibility === "VISIBLE" ? "Mark out of stock" : "Mark in stock"}
+        {busy === "visibility"
+          ? "Updating..."
+          : visibility === "VISIBLE"
+            ? "Mark out of stock"
+            : "Mark in stock"}
       </button>
       <button
-        disabled={busy}
+        disabled={busy !== null}
         onClick={async () => {
           if (!confirm("Delete this product? This cannot be undone.")) return;
-          setBusy(true);
+          setBusy("delete");
           await deleteProduct(productId);
           router.refresh();
-          setBusy(false);
+          setBusy(null);
         }}
         className="text-red-500 hover:underline disabled:opacity-50"
       >
-        Delete
+        {busy === "delete" ? "Deleting..." : "Delete"}
       </button>
     </div>
   );

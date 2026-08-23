@@ -21,7 +21,7 @@ export default async function AdminLayout({
   const session = await getAdminSession();
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#fffafc_0%,#f7f0f8_100%)]">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#f2f2f4_0%,#ececee_100%)]">
       <header className="border-b border-[#f0dfe9] bg-[rgba(255,255,255,0.94)] backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Link href="/admin" className="flex items-center">

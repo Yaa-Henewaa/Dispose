@@ -26,24 +26,27 @@ export default function OrderStatusSelect({
   const [saving, setSaving] = useState(false);
 
   return (
-    <select
-      value={current}
-      disabled={saving}
-      onChange={async (event) => {
-        const next = event.target.value as OrderStatus;
-        setCurrent(next);
-        setSaving(true);
-        await updateOrderStatus(orderId, next);
-        router.refresh();
-        setSaving(false);
-      }}
-      className="rounded-full border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700"
-    >
-      {STATUS_OPTIONS.map((s) => (
-        <option key={s} value={s}>
-          {s.replace(/_/g, " ")}
-        </option>
-      ))}
-    </select>
+    <div className="flex items-center gap-2">
+      <select
+        value={current}
+        disabled={saving}
+        onChange={async (event) => {
+          const next = event.target.value as OrderStatus;
+          setCurrent(next);
+          setSaving(true);
+          await updateOrderStatus(orderId, next);
+          router.refresh();
+          setSaving(false);
+        }}
+        className="rounded-full border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 disabled:opacity-50"
+      >
+        {STATUS_OPTIONS.map((s) => (
+          <option key={s} value={s}>
+            {s.replace(/_/g, " ")}
+          </option>
+        ))}
+      </select>
+      {saving && <span className="text-xs text-gray-400">Saving...</span>}
+    </div>
   );
 }

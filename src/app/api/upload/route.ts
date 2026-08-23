@@ -26,7 +26,15 @@ export async function POST(request: NextRequest) {
             {
               folder: "dispose-products",
               resource_type: "image",
-              transformation: [{ quality: "auto", fetch_format: "auto" }],
+              transformation: [
+                {
+                  width: 1600,
+                  height: 1600,
+                  crop: "limit",
+                  quality: "auto",
+                  fetch_format: "auto",
+                },
+              ],
             },
             (error, result) => {
               if (error || !result) {
